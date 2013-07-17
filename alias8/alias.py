@@ -71,4 +71,7 @@ class Alias8(ControlSurface):
           button(self.buttons_top[i]))
       self.mixer.channel_strip(i).set_arm_button(
           button(self.buttons_bottom[i]))
+      self.mixer.channel_strip(i).set_pan_control(
+          knob(self.knobs_bottom[i]))
+    self.mixer.master_strip().set_volume_control(fader(self.master_fader))
     self.mixer.update()
