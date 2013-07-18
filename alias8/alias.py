@@ -1,3 +1,6 @@
+# Alias 8 remote script for Ableton Live 9.
+# by Kevin Ferguson (http://www.ofrecordings.com/)
+
 from __future__ import with_statement
 
 DEBUG = False
@@ -16,8 +19,14 @@ from _Framework.SliderElement import SliderElement
 
 CHANNEL = 0
 
+# Alias 8 color map.
+WHITE = 2
 CYAN = 4
+MAGENTA = 8
 RED = 16
+BLUE = 32
+YELLOW = 64
+GREEN = 127
 
 def button(notenr, name=None, color=None):
   if color is None:
@@ -36,6 +45,7 @@ def knob(cc):
   return EncoderElement(MIDI_CC_TYPE, 0, cc, Live.MidiMap.MapMode.absolute)
 
 class ColorButton(ButtonElement):
+  """A ButtonElement with a custom on color."""
   def __init__(self, is_momentary, msg_type, channel, identifier, color):
     super(ColorButton, self).__init__(
         is_momentary, msg_type, channel, identifier)
@@ -61,26 +71,27 @@ class Alias8(ControlSurface):
       self.init_session()
       self.init_mixer() 
       
-      # connect mixer to session
+      # Connect mixer to session.
       self.session.set_mixer(self.mixer)
       self.session.update()
+      # New in Live 9: must explicitly activate session component.
       self.set_highlighting_session_component(self.session)
       self._set_suppress_rebuild_requests(False)
 
   def init_session(self):
     self.session = SessionComponent(self.num_tracks, 1)
-    self.session.name = 'Session'
+    self.session.name = 'Alias 8 Session'
     self.session.update()
 
     # Connect the encoder to track scroller.
-    def cb(value):
+    def scroll_cb(value):
       if value == 1:
         self.session._horizontal_banking.scroll_down()
       elif value == 127:
         self.session._horizontal_banking.scroll_up()
     self.track_encoder = EncoderElement(MIDI_CC_TYPE, 0, self.encoder,
         Live.MidiMap.MapMode.absolute)
-    self.track_encoder.add_value_listener(cb)
+    self.track_encoder.add_value_listener(scroll_cb)
 
   def init_mixer(self):
     self.mixer = MixerComponent(self.num_tracks, 0)
