@@ -6,7 +6,7 @@ import Live
 import MidiRemoteScript
 
 from _Framework import TrackEQComponent
-from _Framework.ButtonElement import ButtonElement
+from _Framework.ButtonElement import ButtonElement, DummyUndoStepHandler
 from _Framework.ButtonMatrixElement import ButtonMatrixElement
 from _Framework.ControlSurface import ControlSurface
 from _Framework.DeviceComponent import DeviceComponent
@@ -19,8 +19,14 @@ from _Framework.TransportComponent import TransportComponent
 
 CHANNEL = 0
 
-def button(notenr, name=None):
-  rv = ButtonElement(True, MIDI_NOTE_TYPE, CHANNEL, notenr)
+CYAN = 4
+RED = 16
+
+def button(notenr, name=None, color=None):
+  if color is None:
+    rv = ButtonElement(True, MIDI_NOTE_TYPE, CHANNEL, notenr)
+  else:
+    rv = ColorButton(True, MIDI_NOTE_TYPE, CHANNEL, notenr, color)
   if name:
     rv.name = name
   return rv
@@ -31,6 +37,16 @@ def fader(notenr):
 
 def knob(cc):
   return EncoderElement(MIDI_CC_TYPE, 0, cc, Live.MidiMap.MapMode.absolute)
+
+class ColorButton(ButtonElement):
+  def __init__(self, is_momentary, msg_type, channel, identifier, color):
+    super(ColorButton, self).__init__(
+        is_momentary, msg_type, channel, identifier,
+        undo_step_handler = DummyUndoStepHandler())
+    self.button_value = color
+
+  def turn_on(self):
+    self.send_value(self.button_value)
 
 class Alias8(ControlSurface):
   num_tracks = 8
@@ -78,9 +94,9 @@ class Alias8(ControlSurface):
       self.mixer.channel_strip(i).set_volume_control(
           fader(self.faders[i]))
       self.mixer.channel_strip(i).set_solo_button(
-          button(self.buttons_top[i]))
+          button(self.buttons_top[i], color=CYAN))
       self.mixer.channel_strip(i).set_arm_button(
-          button(self.buttons_bottom[i]))
+          button(self.buttons_bottom[i], color=RED))
       self.mixer.channel_strip(i).set_pan_control(
           knob(self.knobs_bottom[i]))
     self.mixer.master_strip().set_volume_control(fader(self.master_fader))
