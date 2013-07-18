@@ -6,16 +6,13 @@ import Live
 import MidiRemoteScript
 
 from _Framework import TrackEQComponent
-from _Framework.ButtonElement import ButtonElement, DummyUndoStepHandler
-from _Framework.ButtonMatrixElement import ButtonMatrixElement
+from _Framework.ButtonElement import ButtonElement
 from _Framework.ControlSurface import ControlSurface
-from _Framework.DeviceComponent import DeviceComponent
 from _Framework.EncoderElement import EncoderElement
 from _Framework.InputControlElement import *
 from _Framework.MixerComponent import MixerComponent
 from _Framework.SessionComponent import SessionComponent
 from _Framework.SliderElement import SliderElement
-from _Framework.TransportComponent import TransportComponent
 
 CHANNEL = 0
 
@@ -41,8 +38,7 @@ def knob(cc):
 class ColorButton(ButtonElement):
   def __init__(self, is_momentary, msg_type, channel, identifier, color):
     super(ColorButton, self).__init__(
-        is_momentary, msg_type, channel, identifier,
-        undo_step_handler = DummyUndoStepHandler())
+        is_momentary, msg_type, channel, identifier)
     self.button_value = color
 
   def turn_on(self):
