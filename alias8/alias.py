@@ -60,6 +60,16 @@ class Alias8(ControlSurface):
     self.session.name = 'Session'
     self.session.update()
 
+    # Connect the encoder to track scroller.
+    def cb(value):
+      if value == 1:
+        self.session._horizontal_banking.scroll_down()
+      elif value == 127:
+        self.session._horizontal_banking.scroll_up()
+    self.track_encoder = EncoderElement(MIDI_CC_TYPE, 0, self.encoder,
+        Live.MidiMap.MapMode.absolute)
+    self.track_encoder.add_value_listener(cb)
+
   def init_mixer(self):
     self.mixer = MixerComponent(self.num_tracks, 0)
     self.mixer.id = 'Mixer' 
