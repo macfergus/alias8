@@ -6,7 +6,9 @@ If you use Live, but you don't have an Alias 8, you might find this useful as an
 
 ## How to install
 
-If you have a Mac, you may be able to install by typing `make install` in the shell. It will attempt to guess the location of your remote scripts, but I suppose it could easily guess wrong. In that case copy the files by hand.
+If you have a Mac, you may be able to install by typing `make install` in the shell. It will attempt to guess the location of your remote scripts, but I suppose it could easily guess wrong. 
+
+If my script guesses wrong, or if you use Windows, you should find your `MIDI Remote Scripts` directory and copy the `alias8` directory in there.
 
 To use the encoder for scrolling through tracks, you'll need to configure the encoder knob to "relative" mode (out of the box, it's set to "absolute" mode). Use the editor supplied by Livid to do this.
 
@@ -14,6 +16,6 @@ To use the encoder for scrolling through tracks, you'll need to configure the en
 
 Thanks to everyone who has published information about the Ableton's undocumented Python framework, including:
 
-Julien Bayle
-Michael Chenetz
-Hanz Petrov
+- Julien Bayle
+- Michael Chenetz
+- Hanz Petrov
