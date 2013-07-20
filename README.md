@@ -14,7 +14,7 @@ To use the encoder for scrolling through tracks, you'll need to configure the en
 
 ## Credits
 
-Thanks to everyone who has published information about the Ableton's undocumented Python framework, including:
+Thanks to everyone who has published information about Ableton's undocumented Python framework, including:
 
 - Julien Bayle
 - Michael Chenetz
