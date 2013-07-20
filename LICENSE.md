@@ -36,9 +36,7 @@ publicly distribute the Work under its terms, with knowledge of his or her
 Copyright and Related Rights in the Work and the meaning and intended legal
 effect of CC0 on those rights.
 
-1. Copyright and Related Rights.
-
-A Work made available under CC0 may be protected by copyright and related or
+**1. Copyright and Related Rights.** A Work made available under CC0 may be protected by copyright and related or
 neighboring rights ("Copyright and Related Rights").  Copyright and Related
 Rights include, but are not limited to, the following:
 
@@ -65,9 +63,7 @@ Rights include, but are not limited to, the following:
     based on applicable law or treaty, and any national implementations
     thereof.
 
-2. Waiver.
-
-To the greatest extent permitted by, but not in contravention of,
+**2. Waiver.** To the greatest extent permitted by, but not in contravention of,
 applicable law, Affirmer hereby overtly, fully, permanently, irrevocably
 and unconditionally waives, abandons, and surrenders all of Affirmer's
 Copyright and Related Rights and associated claims and causes of action,
@@ -84,9 +80,7 @@ cancellation, termination, or any other legal or equitable action to
 disrupt the quiet enjoyment of the Work by the public as contemplated by
 Affirmer's express Statement of Purpose.
 
-3. Public License Fallback.
-
-Should any part of the Waiver for any reason be judged legally invalid or
+**3. Public License Fallback.** Should any part of the Waiver for any reason be judged legally invalid or
 ineffective under applicable law, then the Waiver shall be preserved to the
 maximum extent permitted taking into account Affirmer's express Statement
 of Purpose. In addition, to the extent the Waiver is so judged Affirmer
@@ -107,7 +101,7 @@ Copyright and Related Rights in the Work or (ii) assert any associated
 claims and causes of action with respect to the Work, in either case
 contrary to Affirmer's express Statement of Purpose.
 
-4. Limitations and Disclaimers.
+**4. Limitations and Disclaimers.**
 
 *  No trademark or patent rights held by Affirmer are waived, abandoned,
     surrendered, licensed or otherwise affected by this document.
