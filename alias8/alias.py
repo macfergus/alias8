@@ -8,7 +8,6 @@ DEBUG = False
 import Live
 import MidiRemoteScript
 
-from _Framework import TrackEQComponent
 from _Framework.ButtonElement import ButtonElement
 from _Framework.ControlSurface import ControlSurface
 from _Framework.EncoderElement import EncoderElement
