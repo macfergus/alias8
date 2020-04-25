@@ -6,7 +6,7 @@ If you use Live, but you don't have an Alias 8, you might find this useful as an
 
 ## How to install
 
-If you have a Mac, you may be able to install by typing `make install` in the shell. It will attempt to guess the location of your remote scripts, but I suppose it could easily guess wrong. 
+If you have a Mac, you may be able to install by typing `make install` in the shell. It will attempt to guess the location of your remote scripts, but I suppose it could easily guess wrong.
 
 If my script guesses wrong, or if you use Windows, you should find your `MIDI Remote Scripts` directory and copy the `alias8` directory in there.
 
