@@ -17,6 +17,7 @@ import MidiRemoteScript
 
 from _Framework.ButtonElement import ButtonElement
 from _Framework.ControlSurface import ControlSurface
+from _Framework.DeviceComponent import DeviceComponent
 from _Framework.EncoderElement import EncoderElement
 from _Framework.InputControlElement import *
 from _Framework.MixerComponent import MixerComponent
@@ -70,6 +71,82 @@ class ColorButton(ButtonElement):
         log('ColorButton turn on ' + str(self.button_value))
         self.send_value(self.button_value)
 
+
+class MixerWithDevices(MixerComponent):
+    def __init__(self, *args, **kwargs):
+        self.devices = []
+        super(MixerWithDevices, self).__init__(*args, **kwargs)
+        for i in range(len(self._channel_strips)):
+            dev = {
+                "component": DeviceComponent(),
+                "cb": None,
+                "track": None
+            }
+            self.devices.append(dev)
+            self.register_components(dev["component"])
+        self._reassign_tracks()
+
+    def get_active_tracks(self):
+        tracks_to_use = self.tracks_to_use()
+        num_tracks = len(self._channel_strips)
+        return tracks_to_use[
+            self._track_offset:self._track_offset + num_tracks
+        ]
+
+    def _reassign_tracks(self):
+        super(MixerWithDevices, self)._reassign_tracks()
+        # assign each DeviceComponent to the first device on its track
+        # this could be called before we construct self.devices
+        if self.devices:
+            log("reassigning tracks")
+            tracks_to_use = self.get_active_tracks()
+            log("tracks_to_use has %d elements" % len(tracks_to_use))
+            log("devices has %d" % len(self.devices))
+            for i, dev in enumerate(self.devices):
+                if i < len(tracks_to_use):
+                    log("device %d gets a track %s" % (
+                        i, tracks_to_use[i].name))
+                    self.assign_device_to_track(tracks_to_use[i], i)
+                else:
+                    log("device %d gets no track" % i)
+                    self.assign_device_to_track(None, i)
+
+    def assign_device_to_track(self, track, i):
+        # nuke existing listener
+        dev = self.devices[i]
+        if dev["track"]:
+            dev["track"].remove_devices_listener(dev["cb"])
+            dev["track"] = None
+            dev["cb"] = None
+            dev["component"].set_device(None)
+
+        if track is not None:
+            # listen for changes to the device chain
+            def dcb():
+                return self._on_device_changed(i)
+            dev["cb"] = dcb
+            dev["track"] = track
+            track.add_devices_listener(dcb)
+            # force an update to attach to any existing device
+            dcb()
+
+    def _on_device_changed(self, i):
+        log("_on_device_changed %d" % i)
+        # the device chain on track i changed-- reassign device if needed
+        track = self.devices[i]["track"]
+        device_comp = self.devices[i]["component"]
+        if not track.devices:
+            device_comp.set_device(None)
+        else:
+            device_comp.set_device(track.devices[0])
+            self.update()
+
+    def set_device_controls(self, track_nr, controls):
+        device_comp = self.devices[track_nr]["component"]
+        device_comp.set_parameter_controls(controls)
+        device_comp.update()
+
+
 class Alias8(ControlSurface):
     num_tracks = 8
     knobs_top = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -112,7 +189,7 @@ class Alias8(ControlSurface):
         self.track_encoder.add_value_listener(scroll_cb)
 
     def init_mixer(self):
-        self.mixer = MixerComponent(self.num_tracks, 0)
+        self.mixer = MixerWithDevices(self.num_tracks, 0)
         self.mixer.id = 'Mixer'
         self.song().view.selected_track = self.mixer.channel_strip(0)._track
         for i in range(self.num_tracks):
@@ -123,7 +200,12 @@ class Alias8(ControlSurface):
             self.mixer.channel_strip(i).set_invert_mute_feedback(True)
             self.mixer.channel_strip(i).set_arm_button(
                     button(self.buttons_bottom[i], color=RED))
-            self.mixer.channel_strip(i).set_pan_control(
-                    knob(self.knobs_bottom[i]))
+            self.mixer.set_device_controls(
+                i,
+                (
+                    knob(self.knobs_top[i]),
+                    knob(self.knobs_bottom[i])
+                )
+            )
         self.mixer.master_strip().set_volume_control(fader(self.master_fader))
         self.mixer.update()
