@@ -1,4 +1,4 @@
-# Alias 8 remote script for Ableton Live 9.
+# Alias 8 remote script for Ableton Live 10.
 # by Kevin Ferguson (http://www.ofrecordings.com/)
 
 from __future__ import with_statement
@@ -53,12 +53,15 @@ def button(notenr, name=None, color=None):
         rv.name = name
     return rv
 
+
 def fader(notenr):
     rv = SliderElement(MIDI_CC_TYPE, CHANNEL, notenr)
     return rv
 
+
 def knob(cc):
     return EncoderElement(MIDI_CC_TYPE, 0, cc, Live.MidiMap.MapMode.absolute)
+
 
 class ColorButton(ButtonElement):
     """A ButtonElement with a custom on color."""
@@ -184,8 +187,12 @@ class Alias8(ControlSurface):
                 self.session._horizontal_banking.scroll_down()
             elif value == 127:
                 self.session._horizontal_banking.scroll_up()
-        self.track_encoder = EncoderElement(MIDI_CC_TYPE, 0, self.encoder,
-                Live.MidiMap.MapMode.absolute)
+        self.track_encoder = EncoderElement(
+            MIDI_CC_TYPE,
+            0,
+            self.encoder,
+            Live.MidiMap.MapMode.absolute
+        )
         self.track_encoder.add_value_listener(scroll_cb)
 
     def init_mixer(self):
