@@ -1,6 +1,6 @@
 # alias8
 
-This is an Ableton Live 9 remote script for Livid Alias 8 control surface. If you have an Alias 8, and you use Live, and you want to use your Alias 8 for basic mixing type controls, this is for you.
+This is an Ableton Live 10 remote script for Livid Alias 8 control surface.
 
 If you use Live, but you don't have an Alias 8, you might find this useful as an example for creating your own remote scripts.
 
