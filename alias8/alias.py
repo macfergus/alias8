@@ -121,7 +121,7 @@ class MixerWithDevices(MixerComponent):
             dev["track"].remove_devices_listener(dev["cb"])
             dev["track"] = None
             dev["cb"] = None
-            dev["component"].set_device(None)
+            dev["component"].set_lock_to_device(True, None)
 
         if track is not None:
             # listen for changes to the device chain
@@ -139,9 +139,10 @@ class MixerWithDevices(MixerComponent):
         track = self.devices[i]["track"]
         device_comp = self.devices[i]["component"]
         if not track.devices:
-            device_comp.set_device(None)
+            device_comp.set_lock_to_device(True, None)
         else:
-            device_comp.set_device(track.devices[0])
+            log('lock track %d to device %s' % (i, track.devices[0].name))
+            device_comp.set_lock_to_device(True, track.devices[0])
             self.update()
 
     def set_device_controls(self, track_nr, controls):
